@@ -13,12 +13,15 @@
     box-sizing:border-box;
 }
 
+html,
 body{
-    font-family:'Manrope',sans-serif;
+    overflow-x:hidden;
+}
+
+body{
+    font-family:Manrope,sans-serif;
     background:var(--bg);
     color:var(--text);
-    overflow-x:hidden;
-    position:relative;
 }
 
 /* =========================
@@ -235,8 +238,13 @@ margin-bottom:40px;
 }
 
     .right{
-        order:-1;
-    }
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+}
 
     .right img{
     width:760px;
