@@ -134,6 +134,10 @@ padding:0 6%;
 }
 
 .primary{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
     text-decoration:none;
     background:var(--gold);
     color:#08111F;
@@ -143,7 +147,9 @@ padding:0 6%;
     transition:.3s;
 }
 
-.primary:hover{
+.primary i{
+    font-size:1.2rem;
+}.primary:hover{
     transform:translateY(-3px);
 }
 
