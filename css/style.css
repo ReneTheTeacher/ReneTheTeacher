@@ -237,6 +237,7 @@ margin-bottom:40px;
 }
 
     .right{
+ order:-1;
     display:flex;
     justify-content:center;
     align-items:center;
