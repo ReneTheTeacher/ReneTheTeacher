@@ -240,12 +240,14 @@ margin-bottom:40px;
     display:block;
     filter:drop-shadow(0 50px 80px rgba(0,0,0,.45));
     transition:opacity .25s linear;
+will-change: opacity;
 }
 
     .left{
     max-width:620px;
     z-index:2;
     transition:transform .08s linear;
+will-change: transform;
 }
 
     .buttons,
