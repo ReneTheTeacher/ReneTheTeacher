@@ -6,11 +6,12 @@ let ticking = false;
 function updateAnimations() {
     const scroll = window.scrollY;
 
+    // Fade the profile image
     profile.style.opacity = Math.max(0, 1 - scroll / 350);
 
-    const move = Math.min(scroll * 0.4, 180);
+    // Move the text up smoothly
     const move = Math.min(scroll * 0.15, 80);
-text.style.transform = `translate3d(0, -${move}px, 0)`;
+    text.style.transform = `translate3d(0, -${move}px, 0)`;
 
     ticking = false;
 }
@@ -21,3 +22,6 @@ window.addEventListener("scroll", () => {
         ticking = true;
     }
 });
+
+// Run once on page load
+updateAnimations();
