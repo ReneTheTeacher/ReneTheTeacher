@@ -237,13 +237,19 @@ margin-bottom:40px;
 }
 
     .right{
- order:-1;
+    order:-1;
     display:flex;
     justify-content:center;
     align-items:center;
     height:auto;
     position:relative;
     overflow:hidden;
+}
+
+.right::before{
+    width:300px;
+    height:300px;
+    filter:blur(100px);
 }
 
     .right img{
