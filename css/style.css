@@ -128,7 +128,6 @@ p{
 
 .left p:last-of-type{
     margin-bottom:40px;
-padding:0 6%;
 }
 
 .buttons{
@@ -241,20 +240,20 @@ margin-bottom:40px;
     display:flex;
     justify-content:center;
     align-items:flex-end;
-    height:100vh;
+    height:auto;
     position:relative;
     overflow:hidden;
 }
 
     .right img{
-    width:760px;
-    max-width:100%;
+    width:100%;
+    max-width:420px;
+    display:block;
     position:relative;
     z-index:2;
-    display:block;
     filter:drop-shadow(0 50px 80px rgba(0,0,0,.45));
     transition:opacity .25s linear;
-will-change: opacity;
+    will-change:opacity;
 }
 
     .left{
