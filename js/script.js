@@ -25,3 +25,29 @@ window.addEventListener("scroll", () => {
 
 // Run once on page load
 updateAnimations();
+const buttons = document.querySelectorAll(".primary-button");
+
+buttons.forEach(button => {
+    button.addEventListener("mousemove", (e) => {
+        const rect = button.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        button.style.setProperty("--mouse-x", `${x}px`);
+        button.style.setProperty("--mouse-y", `${y}px`);
+    });
+});
+const socialButtons = document.querySelectorAll(".social");
+
+socialButtons.forEach(button => {
+    button.addEventListener("mousemove", (e) => {
+        const rect = button.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        button.style.setProperty("--mouse-x", `${x}px`);
+        button.style.setProperty("--mouse-y", `${y}px`);
+    });
+});
