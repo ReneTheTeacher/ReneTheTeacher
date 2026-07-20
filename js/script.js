@@ -289,3 +289,40 @@ window.addEventListener("scroll", () => {
     }
 
 });
+/* =========================
+   TESTIMONIAL VIDEO SOUND
+========================= */
+
+const soundButtons = document.querySelectorAll(".video-sound-button");
+
+soundButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const video = button
+            .closest(".testimonial-video")
+            .querySelector("video");
+
+        video.muted = !video.muted;
+
+        const icon = button.querySelector("i");
+
+        if (video.muted) {
+
+            icon.classList.remove("fa-volume-high");
+            icon.classList.add("fa-volume-xmark");
+
+            button.setAttribute("aria-label", "Activar sonido");
+
+        } else {
+
+            icon.classList.remove("fa-volume-xmark");
+            icon.classList.add("fa-volume-high");
+
+            button.setAttribute("aria-label", "Silenciar");
+
+        }
+
+    });
+
+});
