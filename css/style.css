@@ -1482,9 +1482,7 @@ p {
 .all-testimonials-grid {
     display: grid;
 
-    grid-template-columns: minmax(0, 850px);
-
-    justify-content: center;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 
     gap: 30px;
 }
@@ -1518,28 +1516,20 @@ p {
 
 
 /* =========================
-   DESKTOP VIDEO
+   FULL TESTIMONIAL VIDEO
 ========================= */
 
 .full-testimonial-video {
     width: 100%;
-
-    aspect-ratio: 16 / 9;
-
     overflow: hidden;
-
     background: #000;
 }
 
 .full-testimonial-video video {
     display: block;
-
     width: 100%;
-    height: 100%;
-
-    object-fit: cover;
+    height: auto;
 }
-
 
 /* =========================
    STUDENT INFORMATION
@@ -1657,10 +1647,30 @@ p {
     .full-testimonial-card {
         border-radius: 28px;
     }
+.full-testimonial-video {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+    background: #000;
+}
 
-    .full-testimonial-video {
-        aspect-ratio: 9 / 16;
-    }
+.full-testimonial-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.full-testimonials-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 28px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
 
     .full-testimonial-content {
         display: block;
@@ -1879,4 +1889,58 @@ header.scrolled .logo img {
 
 .hero {
     margin-top: 120px;
+}
+/* =========================
+   VIDEO SOUND BUTTON
+========================= */
+
+.testimonial-video {
+    position: relative;
+}
+
+.video-sound-button {
+    position: absolute;
+
+    right: 18px;
+    bottom: 18px;
+
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    border: 1px solid rgba(255,255,255,.25);
+
+    border-radius: 50%;
+
+    background: rgba(8, 17, 31, .65);
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition: .3s;
+}
+
+
+.video-sound-button:hover {
+    transform: scale(1.08);
+
+    background: rgba(8, 17, 31, .85);
+}
+@media (max-width: 900px) {
+
+    .all-testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
 }
