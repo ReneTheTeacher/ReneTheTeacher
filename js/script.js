@@ -267,7 +267,58 @@ if (
 
     });
 
+    /* =========================
+       TOUCH SWIPE
+    ========================= */
 
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+
+    testimonialTrack.addEventListener(
+        "touchstart",
+        (event) => {
+
+            touchStartX =
+                event.changedTouches[0].screenX;
+
+        },
+        { passive: true }
+    );
+
+
+    testimonialTrack.addEventListener(
+        "touchend",
+        (event) => {
+
+            touchEndX =
+                event.changedTouches[0].screenX;
+
+
+            const swipeDistance =
+                touchEndX - touchStartX;
+
+
+            if (Math.abs(swipeDistance) < 50) {
+
+                return;
+
+            }
+
+
+            if (swipeDistance < 0) {
+
+                nextButton.click();
+
+            } else {
+
+                previousButton.click();
+
+            }
+
+        },
+        { passive: true }
+    );
     window.addEventListener(
         "resize",
         updateCarousel
@@ -640,3 +691,23 @@ if (
     updateResourceCarousel();
 
 }
+let touchStartX = 0;
+let touchEndX = 0;
+
+carousel.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+carousel.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+
+    if (touchEndX < touchStartX - 50) {
+        // Swipe left → next
+        nextSlide();
+    }
+
+    if (touchEndX > touchStartX + 50) {
+        // Swipe right → previous
+        prevSlide();
+    }
+});
