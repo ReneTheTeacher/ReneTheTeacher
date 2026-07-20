@@ -683,7 +683,7 @@ p {
 .carousel-arrow {
     position: absolute;
 
-    top: 80%;
+    top: 50%;
 
     transform: translateY(-50%);
 
@@ -1310,11 +1310,13 @@ p {
     /* =========================
        MOBILE TESTIMONIALS
     ========================= */
-
+.testimonial-carousel {
+    overflow: visible;
+}
     .carousel-card {
-        flex: 0 0 82vw;
+        flex: 0 0 75vw;
 
-        max-width: 360px;
+        max-width: 300px;
     }
 
     .carousel-card .testimonial-video {
@@ -1333,18 +1335,12 @@ p {
         overflow-wrap: break-word;
     }
 
-    .carousel-prev {
-        left: 8px;
-    }
+/* Hide arrows on mobile */
 
-    .carousel-next {
-        right: 8px;
-    }
 .carousel-prev,
 .carousel-next {
-    top: 40%;
+    display: none;
 }
-
     /* =========================
        MOBILE PLANS
     ========================= */
