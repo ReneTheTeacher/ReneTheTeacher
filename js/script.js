@@ -711,3 +711,49 @@ carousel.addEventListener("touchend", (e) => {
         prevSlide();
     }
 });
+const testimonialsSection =
+    document.querySelector(".testimonials-section");
+
+const firstVideo =
+    testimonialsSection.querySelector("video");
+
+const videoSource =
+    firstVideo.querySelector("source");
+
+const originalSrc =
+    videoSource.getAttribute("src");
+
+videoSource.removeAttribute("src");
+
+firstVideo.load();
+
+
+const videoObserver =
+    new IntersectionObserver(
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    videoSource.src =
+                        originalSrc;
+
+                    firstVideo.load();
+
+                    videoObserver.disconnect();
+
+                }
+
+            });
+
+        },
+        {
+            rootMargin: "600px 0px"
+        }
+    );
+
+
+videoObserver.observe(
+    testimonialsSection
+);
