@@ -1329,27 +1329,18 @@ p {
     }
 
 
-    /* =========================
-       MOBILE TESTIMONIALS
-    ========================= */
+  /* =========================
+   MOBILE TESTIMONIALS
+========================= */
+
 @media (max-width: 768px) {
 
-    .carousel-card:not(.active) {
-        opacity: .85;
-
-        border: 2px solid var(--gold);
-
-        box-shadow:
-            0 0 18px rgba(233, 196, 106, .4);
+    .testimonial-carousel {
+        overflow: visible;
     }
 
-}
-    .testimonial-carousel {
-    overflow: visible;
-}
     .carousel-card {
         flex: 0 0 75vw;
-
         max-width: 300px;
     }
 
@@ -1363,17 +1354,27 @@ p {
 
     .carousel-card .testimonial-quote {
         font-size: 18px;
-
         line-height: 1.5;
-
         overflow-wrap: break-word;
     }
 
-/* Hide arrows on mobile */
+    /* INACTIVE CARDS */
 
-.carousel-prev,
-.carousel-next {
-    display: none;
+    .carousel-card:not(.active) {
+        opacity: 1;
+
+        border: 5px solid red !important;
+
+        box-shadow: 0 0 30px red !important;
+    }
+
+    /* Hide arrows */
+
+    .carousel-prev,
+    .carousel-next {
+        display: none;
+    }
+
 }
     /* =========================
        MOBILE PLANS
