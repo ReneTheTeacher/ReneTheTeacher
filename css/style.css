@@ -1357,7 +1357,13 @@ p {
         line-height: 1.5;
         overflow-wrap: break-word;
     }
+@media (max-width: 768px) {
 
+    .testimonial-track {
+        gap: 8px;
+    }
+
+}
     /* INACTIVE CARDS */
 
     .carousel-card:not(.active) {
