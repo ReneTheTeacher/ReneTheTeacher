@@ -164,7 +164,87 @@ if (
 
         });
 
+    /* =========================
+       TOUCH SWIPE SUPPORT
+    ========================= */
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    testimonialTrack.addEventListener(
+        "touchstart",
+        (event) => {
+
+            touchStartX =
+                event.touches[0].clientX;
+
+            touchStartY =
+                event.touches[0].clientY;
+
+        },
+        { passive: true }
+    );
+
+
+    testimonialTrack.addEventListener(
+        "touchend",
+        (event) => {
+
+            const touchEndX =
+                event.changedTouches[0].clientX;
+
+            const touchEndY =
+                event.changedTouches[0].clientY;
+
+
+            const differenceX =
+                touchStartX - touchEndX;
+
+            const differenceY =
+                touchStartY - touchEndY;
+
+
+            /*
+                Ignore vertical scrolling.
+                Only treat the gesture as a swipe
+                if horizontal movement is greater.
+            */
+
+            if (
+                Math.abs(differenceX) <=
+                Math.abs(differenceY)
+            ) {
+
+                return;
+
+            }
+
+
+            const swipeThreshold = 50;
+
+
+            if (
+                differenceX >
+                swipeThreshold
+            ) {
+
+                nextButton.click();
+
+            }
+
+
+            if (
+                differenceX <
+                -swipeThreshold
+            ) {
+
+                previousButton.click();
+
+            }
+
+        },
+        { passive: true }
+    );
         const cardWidth =
             testimonialCards[0].offsetWidth + 8;
 
