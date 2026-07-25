@@ -1332,7 +1332,19 @@ p {
     /* =========================
        MOBILE TESTIMONIALS
     ========================= */
-.testimonial-carousel {
+@media (max-width: 768px) {
+
+    .carousel-card:not(.active) {
+        opacity: .85;
+
+        border: 2px solid var(--gold);
+
+        box-shadow:
+            0 0 18px rgba(233, 196, 106, .4);
+    }
+
+}
+    .testimonial-carousel {
     overflow: visible;
 }
     .carousel-card {
