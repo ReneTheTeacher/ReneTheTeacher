@@ -166,7 +166,7 @@ if (
 
 
         const cardWidth =
-            testimonialCards[0].offsetWidth + 24;
+            testimonialCards[0].offsetWidth + 8;
 
 
         const carouselWidth =
