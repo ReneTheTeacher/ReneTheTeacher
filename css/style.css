@@ -1357,21 +1357,11 @@ p {
         line-height: 1.5;
         overflow-wrap: break-word;
     }
-@media (max-width: 768px) {
 
     .testimonial-track {
         gap: 8px;
-    }
-
-}
-    /* INACTIVE CARDS */
-
-    .carousel-card:not(.active) {
-        opacity: 1;
-
-        border: 5px solid red !important;
-
-        box-shadow: 0 0 30px red !important;
+        touch-action: pan-y;
+        user-select: none;
     }
 
     /* Hide arrows */
