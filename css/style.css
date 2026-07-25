@@ -601,11 +601,28 @@ p {
         transform .5s ease,
         opacity .5s ease;
 }
+@media (max-width: 768px) {
 
-.carousel-card:not(.active) {
-    opacity: .55;
+    .carousel-card:not(.active) {
+        opacity: .9;
+        transform: scale(.88);
 
-    transform: scale(.88);
+        border-color: rgba(233, 196, 106, .7);
+
+        box-shadow:
+            0 0 18px rgba(233, 196, 106, .18);
+    }
+
+    .carousel-card:not(.active) .testimonial-video {
+        background:
+            linear-gradient(
+                135deg,
+                rgba(233, 196, 106, .22),
+                rgba(42, 157, 143, .12)
+            );
+    }
+
+
 }
 
 .carousel-card.active {
