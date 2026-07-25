@@ -603,10 +603,15 @@ p {
 }
 @media (max-width: 768px) {
 
-    .carousel-card:not(.active) {
-        opacity: .9;
-        transform: scale(.88);
+   .carousel-card:not(.active) {
+    opacity: .75;
+    transform: scale(.88);
 
+    border-color: var(--gold);
+
+    box-shadow:
+        0 0 18px rgba(233, 196, 106, .35);
+}
         border-color: rgba(233, 196, 106, .7);
 
         box-shadow:
