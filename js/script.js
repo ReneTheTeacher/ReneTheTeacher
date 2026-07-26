@@ -138,6 +138,128 @@ nextButton
 
 let currentTestimonial = 0;
 
+/*
+    Only ever keep ONE testimonial video loaded/decoded
+    at a time. On iOS, several <video> elements holding
+    a decoded frame at once is what causes everything to
+    lag by the time you reach the 3rd card. Whichever card
+    is not active gets its source fully released.
+*/
+
+let testimonialsInView = false;
+
+const carouselVideos =
+    Array.from(testimonialCards).map((card) => {
+
+        const video =
+            card.querySelector("video");
+
+        const source =
+            video ? video.querySelector("source") : null;
+
+        const originalSrc =
+            source ? source.getAttribute("src") : null;
+
+        if (source && originalSrc) {
+            source.removeAttribute("src");
+        }
+
+        if (video) {
+            video.load();
+        }
+
+        return {
+            video,
+            source,
+            originalSrc,
+            hydrated: false
+        };
+
+    });
+
+
+function hydrateVideo(entry) {
+
+    if (
+        !entry ||
+        !entry.video ||
+        !entry.source ||
+        entry.hydrated
+    ) {
+        return;
+    }
+
+    if (
+        !entry.source.getAttribute("src") &&
+        entry.originalSrc
+    ) {
+
+        entry.source.src =
+            entry.originalSrc;
+
+        entry.video.load();
+
+    }
+
+    entry.hydrated = true;
+
+}
+
+
+function dehydrateVideo(entry) {
+
+    if (
+        !entry ||
+        !entry.video ||
+        !entry.source ||
+        !entry.hydrated
+    ) {
+        return;
+    }
+
+    entry.video.pause();
+
+    entry.video.currentTime = 0;
+
+    entry.source.removeAttribute("src");
+
+    entry.video.load();
+
+    entry.hydrated = false;
+
+}
+
+
+function syncCarouselVideos() {
+
+    carouselVideos.forEach((entry, index) => {
+
+        if (index === currentTestimonial) {
+
+            if (testimonialsInView) {
+
+                hydrateVideo(entry);
+
+                if (entry.video) {
+
+                    entry.video
+                        .play()
+                        .catch(() => {});
+
+                }
+
+            }
+
+        } else {
+
+            dehydrateVideo(entry);
+
+        }
+
+    });
+
+}
+
 
 function updateCarousel() {
 
@@ -179,28 +301,52 @@ function updateCarousel() {
         `translateX(${offset}px)`;
 
 
-    testimonialCards.forEach((card, index) => {
+    syncCarouselVideos();
 
-        const video =
-            card.querySelector("video");
+}
 
-        if (!video) {
-            return;
-        }
 
-        if (
-            index === currentTestimonial
-        ) {
+/*
+    Transition lock. On iOS in-app browsers (Instagram/TikTok)
+    a single swipe gesture can sometimes fire more than one
+    navigation event. Without this lock, that produces the
+    "jumps an extra card" bug. While a slide is in motion
+    (matches the .5s CSS transition on .testimonial-track),
+    further navigation is ignored.
+*/
 
-            video.play();
+let isTransitioning = false;
 
-        } else {
 
-            video.pause();
+function goToTestimonial(index) {
 
-        }
+    if (isTransitioning) {
+        return;
+    }
 
-    });
+    let nextIndex = index;
+
+    if (nextIndex >= testimonialCards.length) {
+        nextIndex = 0;
+    }
+
+    if (nextIndex < 0) {
+        nextIndex = testimonialCards.length - 1;
+    }
+
+    if (nextIndex === currentTestimonial) {
+        return;
+    }
+
+    isTransitioning = true;
+
+    currentTestimonial = nextIndex;
+
+    updateCarousel();
+
+    setTimeout(() => {
+        isTransitioning = false;
+    }, 550);
 
 }
 
@@ -209,18 +355,7 @@ nextButton.addEventListener(
     "click",
     () => {
 
-        currentTestimonial++;
-
-        if (
-            currentTestimonial >=
-            testimonialCards.length
-        ) {
-
-            currentTestimonial = 0;
-
-        }
-
-        updateCarousel();
+        goToTestimonial(currentTestimonial + 1);
 
     }
 );
@@ -230,18 +365,7 @@ previousButton.addEventListener(
     "click",
     () => {
 
-        currentTestimonial--;
-
-        if (
-            currentTestimonial < 0
-        ) {
-
-            currentTestimonial =
-                testimonialCards.length - 1;
-
-        }
-
-        updateCarousel();
+        goToTestimonial(currentTestimonial - 1);
 
     }
 );
@@ -253,9 +377,7 @@ carouselDots.forEach((dot, index) => {
         "click",
         () => {
 
-            currentTestimonial = index;
-
-            updateCarousel();
+            goToTestimonial(index);
 
         }
     );
@@ -329,7 +451,7 @@ testimonialTrack.addEventListener(
             swipeThreshold
         ) {
 
-            nextButton.click();
+            goToTestimonial(currentTestimonial + 1);
 
         }
 
@@ -339,7 +461,7 @@ testimonialTrack.addEventListener(
             -swipeThreshold
         ) {
 
-            previousButton.click();
+            goToTestimonial(currentTestimonial - 1);
 
         }
 
@@ -351,6 +473,42 @@ testimonialTrack.addEventListener(
 window.addEventListener(
     "resize",
     updateCarousel
+);
+
+
+/*
+    Only hydrate/play a video once the testimonials section
+    is actually near the viewport, instead of the first card
+    autoplaying the instant the page loads off-screen.
+*/
+
+const testimonialsInViewObserver =
+    new IntersectionObserver(
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    testimonialsInView = true;
+
+                    syncCarouselVideos();
+
+                    testimonialsInViewObserver.disconnect();
+
+                }
+
+            });
+
+        },
+        {
+            rootMargin: "600px 0px"
+        }
+    );
+
+testimonialsInViewObserver.observe(
+    testimonialTrack.closest(".testimonials-section") ||
+    testimonialTrack
 );
 
 
@@ -769,62 +927,3 @@ resourceTrack.addEventListener(
 updateResourceCarousel();
 }
 
-
-/* = 
-LAZY-LOAD FIRST TESTIMONIAL VIDEO 
-= */
-
-const testimonialsSection = 
-document.querySelector(".testimonials-section");
-
-if (testimonialsSection) {
-
-const firstVideo = 
-testimonialsSection.querySelector("video");
-
-if (firstVideo) {
-
-const videoSource = 
-firstVideo.querySelector("source");
-
-if (videoSource) {
-
-const originalSrc = 
-videoSource.getAttribute("src");
-
-videoSource.removeAttribute("src");
-
-firstVideo.load();
-
-
-const videoObserver = 
-new IntersectionObserver( 
-(entries) => {
-
-        entries.forEach((entry) => {
-
-            if (entry.isIntersecting) {
-
-                videoSource.src =
-                    originalSrc;
-
-                firstVideo.load();
-
-                videoObserver.disconnect();
-
-            }
-
-        });
-
-    },
-    {
-        rootMargin: "600px 0px"
-    }
-);
-videoObserver.observe( 
-testimonialsSection 
-);
-
-}
-}
-}
