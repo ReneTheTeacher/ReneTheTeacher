@@ -1,839 +1,830 @@
-/* =========================
-   HERO ANIMATIONS
-========================= */
+/* = 
+HERO ANIMATIONS 
+= */
 
-const profile = document.querySelector(".right img");
+const profile = document.querySelector(".right img"); 
 const text = document.querySelector(".left");
 
 let ticking = false;
 
 function updateAnimations() {
 
-    if (!profile || !text) {
-        return;
-    }
+if (!profile || !text) {
+    return;
+}
 
-    const scroll = window.scrollY;
+const scroll = window.scrollY;
 
-    profile.style.opacity =
-        Math.max(0, 1 - scroll / 350);
+profile.style.opacity =
+    Math.max(0, 1 - scroll / 350);
 
-    const move =
-        Math.min(scroll * 0.4, 80);
+const move =
+    Math.min(scroll * 0.4, 80);
 
-    text.style.transform =
-        `translate3d(0, -${move}px, 0)`;
+text.style.transform =
+    `translate3d(0, -${move}px, 0)`;
 
-    ticking = false;
-
+ticking = false;
 }
 
 window.addEventListener("scroll", () => {
 
-    if (!ticking) {
+if (!ticking) {
 
-        requestAnimationFrame(updateAnimations);
+    requestAnimationFrame(updateAnimations);
 
-        ticking = true;
+    ticking = true;
 
-    }
-
+}
 });
 
 updateAnimations();
 
 
-/* =========================
-   PRIMARY BUTTON EFFECT
-========================= */
+/* = 
+PRIMARY BUTTON EFFECT 
+= */
 
-const buttons =
-    document.querySelectorAll(".primary-button");
+const buttons = 
+document.querySelectorAll(".primary-button");
 
 buttons.forEach(button => {
 
-    button.addEventListener("mousemove", (e) => {
+button.addEventListener("mousemove", (e) => {
 
-        const rect =
-            button.getBoundingClientRect();
+    const rect =
+        button.getBoundingClientRect();
 
-        const x =
-            e.clientX - rect.left;
+    const x =
+        e.clientX - rect.left;
 
-        const y =
-            e.clientY - rect.top;
+    const y =
+        e.clientY - rect.top;
 
-        button.style.setProperty(
-            "--mouse-x",
-            `${x}px`
-        );
+    button.style.setProperty(
+        "--mouse-x",
+        `${x}px`
+    );
 
-        button.style.setProperty(
-            "--mouse-y",
-            `${y}px`
-        );
+    button.style.setProperty(
+        "--mouse-y",
+        `${y}px`
+    );
 
-    });
-
+});
 });
 
 
-/* =========================
-   SOCIAL BUTTON EFFECT
-========================= */
+/* = 
+SOCIAL BUTTON EFFECT 
+= */
 
-const socialButtons =
-    document.querySelectorAll(".social");
+const socialButtons = 
+document.querySelectorAll(".social");
 
 socialButtons.forEach(button => {
 
-    button.addEventListener("mousemove", (e) => {
+button.addEventListener("mousemove", (e) => {
 
-        const rect =
-            button.getBoundingClientRect();
+    const rect =
+        button.getBoundingClientRect();
 
-        const x =
-            e.clientX - rect.left;
+    const x =
+        e.clientX - rect.left;
 
-        const y =
-            e.clientY - rect.top;
+    const y =
+        e.clientY - rect.top;
 
-        button.style.setProperty(
-            "--mouse-x",
-            `${x}px`
-        );
+    button.style.setProperty(
+        "--mouse-x",
+        `${x}px`
+    );
 
-        button.style.setProperty(
-            "--mouse-y",
-            `${y}px`
-        );
+    button.style.setProperty(
+        "--mouse-y",
+        `${y}px`
+    );
 
-    });
-
+});
 });
 
 
-/* =========================
-   TESTIMONIAL CAROUSEL
-========================= */
+/* = 
+TESTIMONIAL CAROUSEL 
+= */
 
-const testimonialTrack =
-    document.querySelector(".testimonial-track");
+const testimonialTrack = 
+document.querySelector(".testimonial-track");
 
-const testimonialCards =
-    document.querySelectorAll(".carousel-card");
+const testimonialCards = 
+document.querySelectorAll(".carousel-card");
 
-const previousButton =
-    document.querySelector(".carousel-prev");
+const previousButton = 
+document.querySelector(".carousel-prev");
 
-const nextButton =
-    document.querySelector(".carousel-next");
+const nextButton = 
+document.querySelector(".carousel-next");
 
-const carouselDots =
-    document.querySelectorAll(".carousel-dot");
+const carouselDots = 
+document.querySelectorAll(".carousel-dot");
 
 
-if (
-    testimonialTrack &&
-    testimonialCards.length > 0 &&
-    previousButton &&
-    nextButton
+if ( 
+testimonialTrack && 
+testimonialCards.length > 0 && 
+previousButton && 
+nextButton 
 ) {
 
-    let currentTestimonial = 0;
+let currentTestimonial = 0;
 
 
-    function updateCarousel() {
+function updateCarousel() {
 
-        testimonialCards.forEach((card, index) => {
+    testimonialCards.forEach((card, index) => {
 
-            card.classList.toggle(
-                "active",
-                index === currentTestimonial
-            );
+        card.classList.toggle(
+            "active",
+            index === currentTestimonial
+        );
 
-        });
-
-
-        carouselDots.forEach((dot, index) => {
-
-            dot.classList.toggle(
-                "active",
-                index === currentTestimonial
-            );
-
-        });
-
-    /* =========================
-       TOUCH SWIPE SUPPORT
-    ========================= */
-
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    testimonialTrack.addEventListener(
-        "touchstart",
-        (event) => {
-
-            touchStartX =
-                event.touches[0].clientX;
-
-            touchStartY =
-                event.touches[0].clientY;
-
-        },
-        { passive: true }
-    );
-
-
-    testimonialTrack.addEventListener(
-        "touchend",
-        (event) => {
-
-            const touchEndX =
-                event.changedTouches[0].clientX;
-
-            const touchEndY =
-                event.changedTouches[0].clientY;
-
-
-            const differenceX =
-                touchStartX - touchEndX;
-
-            const differenceY =
-                touchStartY - touchEndY;
-
-
-            /*
-                Ignore vertical scrolling.
-                Only treat the gesture as a swipe
-                if horizontal movement is greater.
-            */
-
-            if (
-                Math.abs(differenceX) <=
-                Math.abs(differenceY)
-            ) {
-
-                return;
-
-            }
-
-
-            const swipeThreshold = 50;
-
-
-            if (
-                differenceX >
-                swipeThreshold
-            ) {
-
-                nextButton.click();
-
-            }
-
-
-            if (
-                differenceX <
-                -swipeThreshold
-            ) {
-
-                previousButton.click();
-
-            }
-
-        },
-        { passive: true }
-    );
-        const cardWidth =
-            testimonialCards[0].offsetWidth + 8;
-
-
-        const carouselWidth =
-            testimonialTrack.parentElement.offsetWidth;
-
-
-        const offset =
-            (carouselWidth -
-                testimonialCards[0].offsetWidth) / 2
-            -
-            currentTestimonial * cardWidth;
-
-
-        testimonialTrack.style.transform =
-            `translateX(${offset}px)`;
-
-
-        testimonialCards.forEach((card, index) => {
-
-            const video =
-                card.querySelector("video");
-
-            if (!video) {
-                return;
-            }
-
-            if (
-                index === currentTestimonial
-            ) {
-
-                video.play();
-
-            } else {
-
-                video.pause();
-
-            }
-
-        });
-
-    }
-
-
-    nextButton.addEventListener(
-        "click",
-        () => {
-
-            currentTestimonial++;
-
-            if (
-                currentTestimonial >=
-                testimonialCards.length
-            ) {
-
-                currentTestimonial = 0;
-
-            }
-
-            updateCarousel();
-
-        }
-    );
-
-
-    previousButton.addEventListener(
-        "click",
-        () => {
-
-            currentTestimonial--;
-
-            if (
-                currentTestimonial < 0
-            ) {
-
-                currentTestimonial =
-                    testimonialCards.length - 1;
-
-            }
-
-            updateCarousel();
-
-        }
-    );
+    });
 
 
     carouselDots.forEach((dot, index) => {
 
-        dot.addEventListener(
-            "click",
-            () => {
-
-                currentTestimonial = index;
-
-                updateCarousel();
-
-            }
+        dot.classList.toggle(
+            "active",
+            index === currentTestimonial
         );
 
     });
 
-    /* =========================
-       TOUCH SWIPE
-    ========================= */
-
-    let touchStartX = 0;
-    let touchEndX = 0;
+    const cardWidth =
+        testimonialCards[0].offsetWidth + 8;
 
 
-    testimonialTrack.addEventListener(
-        "touchstart",
-        (event) => {
-
-            touchStartX =
-                event.changedTouches[0].screenX;
-
-        },
-        { passive: true }
-    );
+    const carouselWidth =
+        testimonialTrack.parentElement.offsetWidth;
 
 
-    testimonialTrack.addEventListener(
-        "touchend",
-        (event) => {
-
-            touchEndX =
-                event.changedTouches[0].screenX;
-
-
-            const swipeDistance =
-                touchEndX - touchStartX;
+    const offset =
+        (carouselWidth -
+            testimonialCards[0].offsetWidth) / 2
+        -
+        currentTestimonial * cardWidth;
 
 
-            if (Math.abs(swipeDistance) < 50) {
-
-                return;
-
-            }
+    testimonialTrack.style.transform =
+        `translateX(${offset}px)`;
 
 
-            if (swipeDistance < 0) {
+    testimonialCards.forEach((card, index) => {
 
-                nextButton.click();
+        const video =
+            card.querySelector("video");
 
-            } else {
-
-                previousButton.click();
-
-            }
-
-        },
-        { passive: true }
-    );
-    window.addEventListener(
-        "resize",
-        updateCarousel
-    );
-
-
-    updateCarousel();
-
-}
-
-
-/* =========================
-   SECTION TRANSITION FADE
-========================= */
-
-const sections =
-    document.querySelectorAll(
-        ".hero, .why-section, .plans-section, .testimonials-section"
-    );
-
-
-function updateSectionFade() {
-
-    const viewportHeight =
-        window.innerHeight;
-
-
-    sections.forEach(section => {
-
-        const rect =
-            section.getBoundingClientRect();
-
-        let opacity = 1;
-
-
-        if (
-            rect.bottom < viewportHeight
-        ) {
-
-            const fadeDistance =
-                viewportHeight * 0.45;
-
-            opacity =
-                rect.bottom / fadeDistance;
-
-            opacity =
-                Math.max(
-                    0,
-                    Math.min(1, opacity)
-                );
-
+        if (!video) {
+            return;
         }
 
+        if (
+            index === currentTestimonial
+        ) {
 
-        section.style.opacity =
-            opacity;
+            video.play();
+
+        } else {
+
+            video.pause();
+
+        }
 
     });
 
 }
 
 
-window.addEventListener(
-    "scroll",
-    updateSectionFade,
+nextButton.addEventListener(
+    "click",
+    () => {
+
+        currentTestimonial++;
+
+        if (
+            currentTestimonial >=
+            testimonialCards.length
+        ) {
+
+            currentTestimonial = 0;
+
+        }
+
+        updateCarousel();
+
+    }
+);
+
+
+previousButton.addEventListener(
+    "click",
+    () => {
+
+        currentTestimonial--;
+
+        if (
+            currentTestimonial < 0
+        ) {
+
+            currentTestimonial =
+                testimonialCards.length - 1;
+
+        }
+
+        updateCarousel();
+
+    }
+);
+
+
+carouselDots.forEach((dot, index) => {
+
+    dot.addEventListener(
+        "click",
+        () => {
+
+            currentTestimonial = index;
+
+            updateCarousel();
+
+        }
+    );
+
+});
+
+/* =========================
+   TOUCH SWIPE
+   (registered once, outside updateCarousel,
+   so listeners never pile up)
+========================= */
+
+let testimonialTouchStartX = 0;
+let testimonialTouchStartY = 0;
+
+
+testimonialTrack.addEventListener(
+    "touchstart",
+    (event) => {
+
+        testimonialTouchStartX =
+            event.touches[0].clientX;
+
+        testimonialTouchStartY =
+            event.touches[0].clientY;
+
+    },
+    { passive: true }
+);
+
+
+testimonialTrack.addEventListener(
+    "touchend",
+    (event) => {
+
+        const touchEndX =
+            event.changedTouches[0].clientX;
+
+        const touchEndY =
+            event.changedTouches[0].clientY;
+
+
+        const differenceX =
+            testimonialTouchStartX - touchEndX;
+
+        const differenceY =
+            testimonialTouchStartY - touchEndY;
+
+
+        /*
+            Ignore vertical scrolling.
+            Only treat the gesture as a swipe
+            if horizontal movement is greater.
+        */
+
+        if (
+            Math.abs(differenceX) <=
+            Math.abs(differenceY)
+        ) {
+
+            return;
+
+        }
+
+
+        const swipeThreshold = 50;
+
+
+        if (
+            differenceX >
+            swipeThreshold
+        ) {
+
+            nextButton.click();
+
+        }
+
+
+        if (
+            differenceX <
+            -swipeThreshold
+        ) {
+
+            previousButton.click();
+
+        }
+
+    },
     { passive: true }
 );
 
 
 window.addEventListener(
     "resize",
-    updateSectionFade
+    updateCarousel
+);
+
+
+updateCarousel();
+}
+
+
+/* = 
+SECTION TRANSITION FADE 
+= */
+
+const sections = 
+document.querySelectorAll( 
+".hero, .why-section, .plans-section, .testimonials-section" 
+);
+
+
+function updateSectionFade() {
+
+const viewportHeight =
+    window.innerHeight;
+
+
+sections.forEach(section => {
+
+    const rect =
+        section.getBoundingClientRect();
+
+    let opacity = 1;
+
+
+    if (
+        rect.bottom < viewportHeight
+    ) {
+
+        const fadeDistance =
+            viewportHeight * 0.45;
+
+        opacity =
+            rect.bottom / fadeDistance;
+
+        opacity =
+            Math.max(
+                0,
+                Math.min(1, opacity)
+            );
+
+    }
+
+
+    section.style.opacity =
+        opacity;
+
+});
+}
+
+
+window.addEventListener( 
+"scroll", 
+updateSectionFade, 
+{ passive: true } 
+);
+
+
+window.addEventListener( 
+"resize", 
+updateSectionFade 
 );
 
 
 updateSectionFade();
 
 
-/* =========================
-   MOBILE PLANS CAROUSEL
-========================= */
+/* = 
+MOBILE PLANS CAROUSEL 
+= */
 
-const plansGrid =
-    document.querySelector(".plans-grid");
+const plansGrid = 
+document.querySelector(".plans-grid");
 
-const growthPlan =
-    document.querySelector(
-        ".plan-card.recommended"
-    );
+const growthPlan = 
+document.querySelector( 
+".plan-card.recommended" 
+);
 
 
 function centerGrowthPlan() {
 
-    if (
-        window.innerWidth <= 900 &&
-        plansGrid &&
-        growthPlan
-    ) {
+if (
+    window.innerWidth <= 900 &&
+    plansGrid &&
+    growthPlan
+) {
 
-        const scrollPosition =
-            growthPlan.offsetLeft -
-            (
-                plansGrid.clientWidth -
-                growthPlan.clientWidth
-            ) / 2;
+    const scrollPosition =
+        growthPlan.offsetLeft -
+        (
+            plansGrid.clientWidth -
+            growthPlan.clientWidth
+        ) / 2;
 
 
-        plansGrid.scrollTo({
+    plansGrid.scrollTo({
 
-            left: scrollPosition,
+        left: scrollPosition,
 
-            behavior: "instant"
+        behavior: "instant"
 
-        });
+    });
 
-    }
-
+}
 }
 
 
-window.addEventListener(
-    "load",
-    centerGrowthPlan
+window.addEventListener( 
+"load", 
+centerGrowthPlan 
 );
 
 
-window.addEventListener(
-    "resize",
-    centerGrowthPlan
+window.addEventListener( 
+"resize", 
+centerGrowthPlan 
 );
 
 
-/* =========================
-   SHRINKING STICKY HEADER
-========================= */
+/* = 
+SHRINKING STICKY HEADER 
+= */
 
-const header =
-    document.querySelector("header");
+const header = 
+document.querySelector("header");
 
 
 if (header) {
 
-    window.addEventListener(
-        "scroll",
-        () => {
+window.addEventListener(
+    "scroll",
+    () => {
 
-            if (
-                window.scrollY > 80
-            ) {
+        if (
+            window.scrollY > 80
+        ) {
 
-                header.classList.add(
-                    "scrolled"
-                );
+            header.classList.add(
+                "scrolled"
+            );
 
-            } else {
+        } else {
 
-                header.classList.remove(
-                    "scrolled"
-                );
-
-            }
+            header.classList.remove(
+                "scrolled"
+            );
 
         }
-    );
 
+    }
+);
 }
 
 
-/* =========================
-   TESTIMONIAL VIDEO SOUND
-========================= */
+/* = 
+TESTIMONIAL VIDEO SOUND 
+= */
 
-const soundButtons =
-    document.querySelectorAll(
-        ".video-sound-button"
-    );
+const soundButtons = 
+document.querySelectorAll( 
+".video-sound-button" 
+);
 
 
 soundButtons.forEach(button => {
 
-    button.addEventListener(
-        "click",
-        () => {
+button.addEventListener(
+    "click",
+    () => {
 
-            const video =
-                button
-                    .closest(
-                        ".testimonial-video"
-                    )
-                    .querySelector(
-                        "video"
-                    );
-
-
-            video.muted =
-                !video.muted;
-
-
-            const icon =
-                button.querySelector(
-                    "i"
+        const video =
+            button
+                .closest(
+                    ".testimonial-video"
+                )
+                .querySelector(
+                    "video"
                 );
 
 
-            if (
-                video.muted
-            ) {
+        video.muted =
+            !video.muted;
 
-                icon.classList.remove(
-                    "fa-volume-high"
-                );
 
-                icon.classList.add(
-                    "fa-volume-xmark"
-                );
+        const icon =
+            button.querySelector(
+                "i"
+            );
 
-                button.setAttribute(
-                    "aria-label",
-                    "Activar sonido"
-                );
 
-            } else {
+        if (
+            video.muted
+        ) {
 
-                icon.classList.remove(
-                    "fa-volume-xmark"
-                );
+            icon.classList.remove(
+                "fa-volume-high"
+            );
 
-                icon.classList.add(
-                    "fa-volume-high"
-                );
+            icon.classList.add(
+                "fa-volume-xmark"
+            );
 
-                button.setAttribute(
-                    "aria-label",
-                    "Silenciar"
-                );
+            button.setAttribute(
+                "aria-label",
+                "Activar sonido"
+            );
 
-            }
+        } else {
+
+            icon.classList.remove(
+                "fa-volume-xmark"
+            );
+
+            icon.classList.add(
+                "fa-volume-high"
+            );
+
+            button.setAttribute(
+                "aria-label",
+                "Silenciar"
+            );
 
         }
-    );
 
+    }
+);
 });
 
 
-/* =========================
-   RESOURCES CAROUSEL
-========================= */
+/* = 
+RESOURCES CAROUSEL 
+= */
 
-const resourceTrack =
-    document.querySelector(
-        ".resource-carousel-track"
-    );
+const resourceTrack = 
+document.querySelector( 
+".resource-carousel-track" 
+);
 
-const resourceSlides =
-    document.querySelectorAll(
-        ".resource-slide"
-    );
+const resourceSlides = 
+document.querySelectorAll( 
+".resource-slide" 
+);
 
-const resourcePrev =
-    document.querySelector(
-        ".resource-prev"
-    );
+const resourcePrev = 
+document.querySelector( 
+".resource-prev" 
+);
 
-const resourceNext =
-    document.querySelector(
-        ".resource-next"
-    );
+const resourceNext = 
+document.querySelector( 
+".resource-next" 
+);
 
-const resourceDots =
-    document.querySelectorAll(
-        ".resource-dot"
-    );
+const resourceDots = 
+document.querySelectorAll( 
+".resource-dot" 
+);
 
 
-if (
-    resourceTrack &&
-    resourceSlides.length > 0 &&
-    resourcePrev &&
-    resourceNext
+if ( 
+resourceTrack && 
+resourceSlides.length > 0 && 
+resourcePrev && 
+resourceNext 
 ) {
 
-    let resourceIndex = 0;
+let resourceIndex = 0;
 
 
-    function updateResourceCarousel() {
+function updateResourceCarousel() {
 
-        resourceTrack.style.transform =
-            `translateX(-${resourceIndex * 100}%)`;
-
-
-        resourceDots.forEach(
-            (dot, index) => {
-
-                dot.classList.toggle(
-                    "active",
-                    index === resourceIndex
-                );
-
-            }
-        );
-
-    }
-
-
-    resourceNext.addEventListener(
-        "click",
-        () => {
-
-            resourceIndex++;
-
-
-            if (
-                resourceIndex >=
-                resourceSlides.length
-            ) {
-
-                resourceIndex = 0;
-
-            }
-
-
-            updateResourceCarousel();
-
-        }
-    );
-
-
-    resourcePrev.addEventListener(
-        "click",
-        () => {
-
-            resourceIndex--;
-
-
-            if (
-                resourceIndex < 0
-            ) {
-
-                resourceIndex =
-                    resourceSlides.length - 1;
-
-            }
-
-
-            updateResourceCarousel();
-
-        }
-    );
+    resourceTrack.style.transform =
+        `translateX(-${resourceIndex * 100}%)`;
 
 
     resourceDots.forEach(
         (dot, index) => {
 
-            dot.addEventListener(
-                "click",
-                () => {
-
-                    resourceIndex =
-                        index;
-
-                    updateResourceCarousel();
-
-                }
+            dot.classList.toggle(
+                "active",
+                index === resourceIndex
             );
 
         }
     );
 
-
-    updateResourceCarousel();
-
 }
-let touchStartX = 0;
-let touchEndX = 0;
 
-carousel.addEventListener("touchstart", (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-});
 
-carousel.addEventListener("touchend", (e) => {
-    touchEndX = e.changedTouches[0].screenX;
+resourceNext.addEventListener(
+    "click",
+    () => {
 
-    if (touchEndX < touchStartX - 50) {
-        // Swipe left → next
-        nextSlide();
+        resourceIndex++;
+
+
+        if (
+            resourceIndex >=
+            resourceSlides.length
+        ) {
+
+            resourceIndex = 0;
+
+        }
+
+
+        updateResourceCarousel();
+
     }
+);
 
-    if (touchEndX > touchStartX + 50) {
-        // Swipe right → previous
-        prevSlide();
+
+resourcePrev.addEventListener(
+    "click",
+    () => {
+
+        resourceIndex--;
+
+
+        if (
+            resourceIndex < 0
+        ) {
+
+            resourceIndex =
+                resourceSlides.length - 1;
+
+        }
+
+
+        updateResourceCarousel();
+
     }
-});
-const testimonialsSection =
-    document.querySelector(".testimonials-section");
+);
 
-const firstVideo =
-    testimonialsSection.querySelector("video");
 
-const videoSource =
-    firstVideo.querySelector("source");
+resourceDots.forEach(
+    (dot, index) => {
 
-const originalSrc =
-    videoSource.getAttribute("src");
+        dot.addEventListener(
+            "click",
+            () => {
+
+                resourceIndex =
+                    index;
+
+                updateResourceCarousel();
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================
+   TOUCH SWIPE
+   (registered once, using the real
+   resource-carousel elements)
+========================= */
+
+let resourceTouchStartX = 0;
+let resourceTouchEndX = 0;
+
+
+resourceTrack.addEventListener(
+    "touchstart",
+    (event) => {
+
+        resourceTouchStartX =
+            event.changedTouches[0].screenX;
+
+    },
+    { passive: true }
+);
+
+
+resourceTrack.addEventListener(
+    "touchend",
+    (event) => {
+
+        resourceTouchEndX =
+            event.changedTouches[0].screenX;
+
+
+        if (
+            resourceTouchEndX <
+            resourceTouchStartX - 50
+        ) {
+
+            resourceNext.click();
+
+        }
+
+
+        if (
+            resourceTouchEndX >
+            resourceTouchStartX + 50
+        ) {
+
+            resourcePrev.click();
+
+        }
+
+    },
+    { passive: true }
+);
+
+
+updateResourceCarousel();
+}
+
+
+/* = 
+LAZY-LOAD FIRST TESTIMONIAL VIDEO 
+= */
+
+const testimonialsSection = 
+document.querySelector(".testimonials-section");
+
+if (testimonialsSection) {
+
+const firstVideo = 
+testimonialsSection.querySelector("video");
+
+if (firstVideo) {
+
+const videoSource = 
+firstVideo.querySelector("source");
+
+if (videoSource) {
+
+const originalSrc = 
+videoSource.getAttribute("src");
 
 videoSource.removeAttribute("src");
 
 firstVideo.load();
 
 
-const videoObserver =
-    new IntersectionObserver(
-        (entries) => {
+const videoObserver = 
+new IntersectionObserver( 
+(entries) => {
 
-            entries.forEach((entry) => {
+        entries.forEach((entry) => {
 
-                if (entry.isIntersecting) {
+            if (entry.isIntersecting) {
 
-                    videoSource.src =
-                        originalSrc;
+                videoSource.src =
+                    originalSrc;
 
-                    firstVideo.load();
+                firstVideo.load();
 
-                    videoObserver.disconnect();
+                videoObserver.disconnect();
 
-                }
+            }
 
-            });
+        });
 
-        },
-        {
-            rootMargin: "600px 0px"
-        }
-    );
-
-
-videoObserver.observe(
-    testimonialsSection
+    },
+    {
+        rootMargin: "600px 0px"
+    }
 );
+videoObserver.observe( 
+testimonialsSection 
+);
+
+}
+}
+}
