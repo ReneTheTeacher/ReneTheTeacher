@@ -221,6 +221,40 @@ function dehydrateVideo(entry) {
 
     entry.video.currentTime = 0;
 
+    /*
+        Reset to muted before releasing. Otherwise, next time
+        this card is hydrated, the browser tries to autoplay
+        it unmuted with no fresh tap behind it — iOS silently
+        blocks that, and the video just sits there looking
+        frozen. Muted autoplay is always allowed.
+    */
+
+    entry.video.muted = true;
+
+    const soundButton =
+        entry.video
+            .closest(".testimonial-video")
+            ?.querySelector(".video-sound-button");
+
+    if (soundButton) {
+
+        const icon =
+            soundButton.querySelector("i");
+
+        if (icon) {
+
+            icon.classList.remove("fa-volume-high");
+            icon.classList.add("fa-volume-xmark");
+
+        }
+
+        soundButton.setAttribute(
+            "aria-label",
+            "Activar sonido"
+        );
+
+    }
+
     entry.source.removeAttribute("src");
 
     entry.video.load();
@@ -342,11 +376,17 @@ function goToTestimonial(index) {
 
     currentTestimonial = nextIndex;
 
-    updateCarousel();
+    try {
 
-    setTimeout(() => {
-        isTransitioning = false;
-    }, 550);
+        updateCarousel();
+
+    } finally {
+
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 550);
+
+    }
 
 }
 
@@ -392,11 +432,17 @@ carouselDots.forEach((dot, index) => {
 
 let testimonialTouchStartX = 0;
 let testimonialTouchStartY = 0;
+let testimonialTouchOnButton = false;
 
 
 testimonialTrack.addEventListener(
     "touchstart",
     (event) => {
+
+        testimonialTouchOnButton =
+            !!event.target.closest(
+                ".video-sound-button"
+            );
 
         testimonialTouchStartX =
             event.touches[0].clientX;
@@ -412,6 +458,10 @@ testimonialTrack.addEventListener(
 testimonialTrack.addEventListener(
     "touchend",
     (event) => {
+
+        if (testimonialTouchOnButton) {
+            return;
+        }
 
         const touchEndX =
             event.changedTouches[0].clientX;
@@ -695,9 +745,21 @@ button.addEventListener(
                     "video"
                 );
 
+        /*
+            Toggling .muted while a video is actively decoding
+            and playing is what tends to trigger the iOS audio
+            route hitch. Pausing first, flipping the flag, then
+            replaying is a cleaner handoff.
+        */
+
+        video.pause();
 
         video.muted =
             !video.muted;
+
+        video
+            .play()
+            .catch(() => {});
 
 
         const icon =
