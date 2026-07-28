@@ -816,6 +816,81 @@ document.querySelector(
 ".resource-carousel-track" 
 );
 
+const resourceIndicators =
+document.querySelector(
+".resource-carousel-indicators"
+);
+
+
+/*
+    Build the slides + dots from resourcesData
+    (defined in resources-data.js, loaded before this file).
+    This is the only part that changes when a new resource
+    is added to resourcesData — everything below still just
+    queries the DOM like before, so the carousel logic itself
+    never has to be touched.
+*/
+
+if (
+    resourceTrack &&
+    typeof resourcesData !== "undefined" &&
+    resourcesData.length > 0
+) {
+
+    resourceTrack.innerHTML = resourcesData.map(
+        (resource) => `
+            <article class="resource-slide">
+
+                <div class="resource-cover">
+                    <img src="${resource.image}" alt="${resource.titleMain} ${resource.titleSpan}">
+                </div>
+
+                <div class="resource-content">
+
+                    <div class="resource-category">
+                        ${resource.category}
+                    </div>
+
+                    <h2>
+                        ${resource.titleMain}
+                        <span>${resource.titleSpan}</span>
+                    </h2>
+
+                    <p>
+                        ${resource.description}
+                    </p>
+
+                    <a
+                        href="${resource.pdf}"
+                        class="resource-button"
+                        target="_blank"
+                        download>
+
+                        <i class="fa-solid fa-download"></i>
+
+                        Descargar recurso
+
+                    </a>
+
+                </div>
+
+            </article>
+        `
+    ).join("");
+
+
+    if (resourceIndicators) {
+
+        resourceIndicators.innerHTML = resourcesData.map(
+            (_, index) =>
+                `<span class="resource-dot${index === 0 ? " active" : ""}"></span>`
+        ).join("");
+
+    }
+
+}
+
+
 const resourceSlides = 
 document.querySelectorAll( 
 ".resource-slide" 
