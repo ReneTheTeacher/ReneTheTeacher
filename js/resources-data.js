@@ -31,6 +31,14 @@ const resourcesData = [
         pdf: "https://pub-fb15892a5a2546efbed005bebf51cc86.r2.dev/Resources/Everyday_Life_Idioms.pdf"
     }
 
+,{
+        category: "ADVERBS",
+        titleMain: "Everyday Life",
+        titleSpan: "Adverbs for Comparatives",
+        description: "Aprende adverbios útiles para comparar de una manera más natural.",
+        image: "assets/everyday-life-idioms.png",
+        pdf: "https://pub-fb15892a5a2546efbed005bebf51cc86.r2.dev/Resources/Adverbs_for_Comparatives.png"
+    }
     /*
     Ejemplo de cómo se vería un tercer recurso.
     Descomenta (quita /* y *​/) y edita para usarlo:
